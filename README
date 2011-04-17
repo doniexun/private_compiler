@@ -1,14 +1,14 @@
 What is this?
   This project implementates a tiny compiler, "tc".
 How to implementate?
-  I learn and write tc with the help of the book 
+  I learn and write tc with the help of the book
     'Compiler Construction Principles and Practice'.
   And the name "tc" comes from the compiler TINY in the book.
   Although the book includes all the codes of TINY I refered to,
     the code in this project is written by myself;-)
 
-Author: 
+Author:
   Xiaochen Wang <wangxiaochen0@gmail.com>
-NOTE: 
+NOTE:
   The project is *only* my practice of learning compiler principles.
   I cannot guarantee the code is meaningful to you!
