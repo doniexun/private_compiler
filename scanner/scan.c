@@ -63,28 +63,28 @@ skip:
 
 void handletoken(struct token *token)
 {
-	printf("\t[scan] ");
+	printf("\t");
 	switch (token->type) {
 	case tokenunknown:
-		printf("unknown token\n");
+		printf("[UNKNOWN]\n");
 		break;
 	case tokeneof:
-		printf("EOF\n");
+		printf("[EOF]\n");
 		break;
 	case tokenerr:
-		printf("ERROR: %s\n", token->buf);
+		printf("[ERROR] %s\n", token->buf);
 		break;
 	case tokensym:
-		printf("symbol: %s\n", token->buf);
+		printf("[symbol] %s\n", token->buf);
 		break;
 	case tokennum:
-		printf("num: val=%s\n", token->buf);
+		printf("[number] val=%s\n", token->buf);
 		break;
 	case tokenid:
 		if (reservedword(token->buf))
-			printf("reserved word: %s\n", token->buf);
+			printf("[reserved word] %s\n", token->buf);
 		else
-			printf("identifier: name=%s\n", token->buf);
+			printf("[identifier] name=%s\n", token->buf);
 
 		break;
 	default:
