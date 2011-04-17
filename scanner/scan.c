@@ -63,6 +63,7 @@ skip:
 
 void handletoken(struct token *token)
 {
+	printf("\t[scan] ");
 	switch (token->type) {
 	case tokenunknown:
 		printf("unknown token\n");

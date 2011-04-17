@@ -33,7 +33,6 @@ FILE *xfopen(const char *path, const char *mode)
 	return file;
 }
 
-
 /* only one source file at one time */
 static int sourcefd;
 static char textbuf[CHARBUFSIZE];
@@ -51,6 +50,46 @@ static void fillbuf(void)
 	textbufend = n - 1;
 }
 
+#define LINE_BUF
+#ifdef LINE_BUF
+static char linebuf[LINEBUFSIZE];
+static char *line;
+static int lineno;
+
+static char *nextline(void)
+{
+	char *p = linebuf - 1;
+	do {
+		if (++p > &linebuf[LINEBUFSIZE - 2])
+			errexit("line buffer overflows");
+		if (textbufpos > textbufend)
+			fillbuf();
+		*p = textbuf[textbufpos++];
+	} while (*p != '\0' && *p != '\n');
+	/* add '\0' to tail of line */
+	*++p = '\0';
+	return linebuf;
+}
+
+char nextchar(void)
+{
+	/* end of file */
+	if (!line || !*line) {
+		line = nextline();
+		if (*line)
+			printf("%-4d %s", lineno++, line);
+	}
+	return *line++;
+}
+
+void backchar(char c)
+{
+	line--;
+	if (*line != c)
+		errexit("text buf corrupts");
+}
+
+#else	/* LINE_BUF end */
 char nextchar(void)
 {
 	if (textbufpos > textbufend)
@@ -58,12 +97,14 @@ char nextchar(void)
 	return textbuf[textbufpos++];
 }
 
-char backchar(char c)
+void backchar(char c)
 {
 	textbufpos--;
 	if (textbuf[textbufpos] != c)
 		errexit("text buf corrupts");
 }
+
+#endif	/* !LINE_BUF end */
 
 void inittexthandle(char *sourcefile)
 {
@@ -74,4 +115,10 @@ void inittexthandle(char *sourcefile)
 	memset(textbuf, 0, CHARBUFSIZE);
 	textbufpos = 0;
 	textbufend = -1;	/* nextchar() will read the source file */
+#ifdef LINE_BUF
+	/* init line buf */
+	memset(linebuf, 0, LINEBUFSIZE);
+	line = NULL;
+	lineno = 0;
+#endif
 }

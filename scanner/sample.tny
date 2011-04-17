@@ -1,6 +1,6 @@
 {
 	Sample Language
-	tiny language: comput factorial
+	tiny language: comput factorial(x!)
 }{test comment scanning}
 
 read x;
@@ -12,3 +12,5 @@ if 0 < x then {don't comput if x <= 0}
 	until x = 0;
 	write fact {out factorial of x}
 end
+
+
