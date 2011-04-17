@@ -1,10 +1,9 @@
 {
 	Sample Language
 	tiny language: comput factorial
-}}
+}{test comment scanning}
 
 read x;
-
 if 0 < x then {don't comput if x <= 0}
 	fact := 1
 	repeat
