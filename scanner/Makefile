@@ -1,8 +1,13 @@
 CC = gcc
 CFLAGS = -fno-builtin
 
-all:scan
-scan:scan.c texthandle.c
-	$(CC) $(CFLAGS) $^ -o $@
+all:scanner
+scanner:scanner.o scan.o texthandle.o
+scanner.o:scanner.c
+	$(CC) $(CFLAGS) $^ -c -o $@
+scan.o:scan.c
+	$(CC) $(CFLAGS) $^ -c -o $@
+texthandle.o:texthandle.c
+	$(CC) $(CFLAGS) $^ -c -o $@
 clean:
-	rm -f scan
+	rm -f scanner *.o

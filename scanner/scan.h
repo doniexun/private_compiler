@@ -97,4 +97,7 @@ static inline int reservedword(char *str)
 	return 0;
 }
 
+extern void gettoken(struct token *);
+extern void inittoken(struct token *);
+
 #endif	/* scan.h */

@@ -50,7 +50,7 @@ static void fillbuf(void)
 	textbufend = n - 1;
 }
 
-#define LINE_BUF
+//#define LINE_BUF
 #ifdef LINE_BUF
 static char linebuf[LINEBUFSIZE];
 static char *line;
