@@ -3,31 +3,7 @@
 #include "../scanner/scan.h"
 #include "../scanner/text.h"
 
-#define DEBUG
-
-/*
- * Top-down parsing by Recursive-Descent
- *
- * BNF for expression:
- *   exp   -> exp addop term | term
- *   addop -> + | -
- *   term  -> term mulop factor | factor
- *   factor -> (exp) | number
- *
- *   ====translate BNF to EBNF====>
- *
- * EBNF for expression:
- *   exp   -> term { addop term }
- *   term  -> factor { mulop factor }
- *   factor -> (exp) | number
- */
-
-void debugerror(void)
-{
-	fprintf(stderr, "error\n");
-	exit(EXIT_FAILURE);
-}
-
+/* some auxiliary function */
 static inline int isend(struct token *token)
 {
 	if (token->type == tokeneof)
@@ -75,7 +51,8 @@ static inline int tokennumber(struct token *token)
 	return atoi(token->buf);
 }
 
-/* internal token */
+/* internal token stream handling */
+#define DEBUG
 static struct token __token;
 static int backtoken = 0;
 
@@ -98,23 +75,47 @@ static struct token *get_token(void)
 	inittoken(&__token);
 	gettoken(&__token);
 #ifdef DEBUG
-	fprintf(stdout, "[%s]\n", isend(&__token) ? "EOF" : __token.buf);
+	fprintf(stdout, "%s", isend(&__token) ? "" : __token.buf);
+	fflush(stdout);
 #endif
 	return &__token;
 }
 
-int factor(void)
+static void experror(void)
+{
+	fprintf(stderr, "\n[error token:%s]\n",
+			isend(&__token) ? "EOF" : __token.buf);
+	exit(EXIT_FAILURE);
+}
+
+/*
+ * Top-down parsing by Recursive-Descent
+ *
+ * BNF for expression:
+ *   exp   -> exp addop term | term
+ *   addop -> + | -
+ *   term  -> term mulop factor | factor
+ *   factor -> (exp) | number
+ *
+ *   ====translate BNF to EBNF====>
+ *
+ * EBNF for expression:
+ *   exp   -> term { addop term }
+ *   term  -> factor { mulop factor }
+ *   factor -> (exp) | number
+ */
+static int exp(void);
+static int factor(void)
 {
 	struct token *token;
 	int ret;
 
-	dbg("");
-
 	token = get_token();
+
 	if (isend(token)){
 		/* 
-		 * factor is only called by term() 
-		 * int term(): ret *= 1(factor()) has no side-effect.
+		 * factor() is only called by term().
+		 * So factor() returns 1, which has bad effect on term().
 		 */
 		ret = 1;
 	} else if (isleftparenthesis(token)) {
@@ -122,23 +123,21 @@ int factor(void)
 		ret = exp();
 		token = get_token();
 		if (!isrightparenthesis(token))
-			debugerror();
+			experror();
 	} else if (isnumber(token)){
 		ret = tokennumber(token);
 	} else {
-		debugerror();
+		experror();
 	}
 	return ret;
 }
 
-int term(void)
+static int term(void)
 {
 	struct token *token;
 	int ret;
 
-	dbg("");
 	ret = factor();
-	dbg("");
 
 	while (!isend(token = get_token())) {
 		if (!ismulop(token)) {
@@ -153,21 +152,19 @@ int term(void)
 			ret /= factor();
 			break;
 		default:
-			debugerror();
+			experror();
 			break;
 		}
 	}
 	return ret;
 }
 
-int exp(void)
+static int exp(void)
 {
 	struct token *token;
 	int ret;
 
-	dbg("");
 	ret = term();
-	dbg("");
 
 	while (!isend(token = get_token())) {
 		if (!isaddop(token)) {
@@ -182,16 +179,17 @@ int exp(void)
 			ret -= term();
 			break;
 		default:
-			debugerror();
+			experror();
 			break;
 		}
 	}
+
 	return ret;
 }
 
 static void caculate(void)
 {
-	printf("answer=%d\n", exp());
+	printf("\nanswer=%d\n", exp());
 }
 
 int main(int argc, char **argv)
