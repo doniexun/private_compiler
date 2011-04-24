@@ -5,32 +5,46 @@
 
 void handletoken(struct token *token)
 {
-	printf("\t%d", token->lineno);
+	printf("\t%-4d", token->lineno);
 	switch (token->type) {
-	case tokenunknown:
+	case tkunknown:
 		printf("[UNKNOWN]\n");
 		break;
-	case tokeneof:
+	case tkeof:
 		printf("[EOF]\n");
 		break;
-	case tokenerr:
-		printf("[ERROR] %s\n", token->buf);
-		break;
-	case tokensym:
+	case tkeq:
+	case tklt:
+	case tkadd:
+	case tksub:
+	case tkmul:
+	case tkdiv:
+	case tklparen:
+	case tkrparen:
+	case tkassign:
 		printf("[symbol] %s\n", token->buf);
 		break;
-	case tokennum:
+	case tknum:
 		printf("[number] val=%s\n", token->buf);
 		break;
-	case tokenid:
-		if (reservedword(token->buf))
-			printf("[reserved word] %s\n", token->buf);
-		else
-			printf("[identifier] name=%s\n", token->buf);
-
+	case tkid:
+		printf("[identifier] name=%s\n", token->buf);
+		break;
+	case tkif:
+	case tkthen:
+	case tkelse:
+	case tkend:
+	case tkrepeat:
+	case tkuntil:
+	case tkread:
+	case tkwrite:
+		printf("[reserved word] %s\n", token->buf);
+		break;
+	case tkerr:
+		printf("[ERROR] %s\n", token->buf);
 		break;
 	default:
-		printf("[token handling error]\n");
+		printf("[ERROR] oops!\n");
 		break;
 	}
 }
@@ -48,7 +62,7 @@ void scan(char *source)
 		inittoken(&token);
 		gettoken(&token);
 		handletoken(&token);
-	} while (token.type != tokeneof);
+	} while (token.type != tkeof);
 }
 
 static void usage(void)

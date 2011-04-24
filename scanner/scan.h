@@ -2,12 +2,19 @@
 #define __SCAN_H
 
 enum tokentype {
-	tokenunknown,
-	tokeneof,
-	tokenerr,
-	tokensym,
-	tokennum,
-	tokenid
+	/* book-keeping tokens */
+	tkunknown, tkeof, tkerr,
+	/* revered words */
+	tkif, tkthen, tkelse, tkend,	/* if then else end */
+	tkrepeat, tkuntil,		/* repeat until */
+	tkread, tkwrite,		/* read write */
+	/* special symbol */
+	tkeq, tklt,			/* = < */
+	tkadd, tksub, tkmul, tkdiv,	/* + - * / */
+	tkassign, tksemi,		/* := ; */
+	tklparen, tkrparen,		/* ( ) */
+	/* multicharacter tokens */
+	tknum, tkid
 };
 
 #define tokenbufsize 41
@@ -27,12 +34,12 @@ static inline void settokentype(struct token *token, enum tokentype type)
 
 static inline void settokeneof(struct token *token)
 {
-	settokentype(token, tokeneof);
+	settokentype(token, tkeof);
 }
 
 static inline void settokenerror(struct token *token)
 {
-	settokentype(token, tokenerr);
+	settokentype(token, tkerr);
 }
 
 static inline void settokenchar(struct token *token, char c)
@@ -84,19 +91,26 @@ static inline int issymbol(char c)
 	}
 }
 
-static inline int reservedword(char *str)
+static inline int settokenreservedword(struct token *token)
 {
-	if (!strcmp(str, "if") ||
-		!strcmp(str, "then") ||
-		!strcmp(str, "else") ||
-		!strcmp(str, "end") ||
-		!strcmp(str, "repeat") ||
-		!strcmp(str, "until") ||
-		!strcmp(str, "read") ||
-		!strcmp(str, "write"))
-		return 1;
-	return 0;
+	if (strcmp(token->buf, "if") == 0)
+		settokentype(token, tkif);
+	else if (strcmp(token->buf, "then"))
+		settokentype(token, tkthen);
+	else if (strcmp(token->buf, "else"))
+		settokentype(token, tkelse);
+	else if (strcmp(token->buf, "end"))
+		settokentype(token, tkend);
+	else if (strcmp(token->buf, "repeat"))
+		settokentype(token, tkrepeat);
+	else if (strcmp(token->buf, "until"))
+		settokentype(token, tkuntil);
+	else if (strcmp(token->buf, "read"))
+		settokentype(token, tkread);
+	else if (strcmp(token->buf, "write"))
+		settokentype(token, tkwrite);
 }
+
 
 extern void gettoken(struct token *);
 extern void inittoken(struct token *);

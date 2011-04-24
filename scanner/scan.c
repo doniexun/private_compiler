@@ -6,7 +6,7 @@
 
 void inittoken(struct token *token)
 {
-	token->type = tokenunknown;
+	token->type = tkunknown;
 	token->lineno = 0;
 	token->pos = 0;
 	memset(token->buf, 0x0, sizeof(token->buf));
@@ -32,30 +32,56 @@ skip:
 		settokeneof(token);
 	/* symbol */
 	} else if (issymbol(c)) {
-		settokentype(token, tokensym);
-		if (c == ':') {
+		switch (c) {
+		case ':':
 			if ((c = nextchar()) == '=') {
+				settokentype(token, tkassign);
 				settokenstr(token, ":=");
 			} else {
 				settokenerror(token);
 				backchar(c);
 			}
-		} else {
+			break;
+		case ';':
+			settokentype(token, tksemi);
+		case '<':
+			settokentype(token, tklt);
+		case '=':
+			settokentype(token, tkeq);
+		case '+':
+			settokentype(token, tkadd);
+		case '-':
+			settokentype(token, tksub);
+		case '*':
+			settokentype(token, tkmul);
+		case '/':
+			settokentype(token, tkdiv);
+		case '(':
+			settokentype(token, tklparen);
+		case ')':
+			settokentype(token, tkrparen);
 			settokenchar(token, c);
+			break;
+		default:
+			settokenerror(token);
+			backchar(c);
+			break;
 		}
 	/* number */
 	} else if (isdigit(c)) {
-		settokentype(token, tokennum);
+		settokentype(token, tknum);
 		settokenchar(token, c);
 		while ((c = nextchar()) && isdigit(c))
 			settokenchar(token, c);
 		backchar(c);
 	/* identifier */
 	} else if (isletter(c)) {
-		settokentype(token, tokenid);
+		settokentype(token, tkid);
 		settokenchar(token, c);
 		while ((c = nextchar()) && isletter(c))
 			settokenchar(token, c);
+		/* Is token reserved word? */
+		settokenreservedword(token);
 		backchar(c);
 	/* error */
 	} else {
