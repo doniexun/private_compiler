@@ -7,6 +7,7 @@
 void inittoken(struct token *token)
 {
 	token->type = tokenunknown;
+	token->lineno = 0;
 	token->pos = 0;
 	memset(token->buf, 0x0, sizeof(token->buf));
 }
@@ -24,7 +25,8 @@ skip:
 			;
 		goto skip;
 	}
-
+	/* set token line number */
+	token->lineno = getlineno();
 	/* eof */
 	if (!c) {
 		settokeneof(token);
@@ -58,37 +60,5 @@ skip:
 	/* error */
 	} else {
 		settokenerror(token);
-	}
-}
-
-void handletoken(struct token *token)
-{
-	printf("\t");
-	switch (token->type) {
-	case tokenunknown:
-		printf("[UNKNOWN]\n");
-		break;
-	case tokeneof:
-		printf("[EOF]\n");
-		break;
-	case tokenerr:
-		printf("[ERROR] %s\n", token->buf);
-		break;
-	case tokensym:
-		printf("[symbol] %s\n", token->buf);
-		break;
-	case tokennum:
-		printf("[number] val=%s\n", token->buf);
-		break;
-	case tokenid:
-		if (reservedword(token->buf))
-			printf("[reserved word] %s\n", token->buf);
-		else
-			printf("[identifier] name=%s\n", token->buf);
-
-		break;
-	default:
-		printf("[token handling error]\n");
-		break;
 	}
 }

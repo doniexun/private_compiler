@@ -15,8 +15,9 @@ enum tokentype {
 
 struct token {
 	enum tokentype type;		/* token type */
+	int lineno;			/* line number */
+	char pos;			/* current postion of buffer */
 	char buf[tokenbufsize];		/* internal token string buf */
-	char pos;			/* current position of buf */
 };
 
 static inline void settokentype(struct token *token, enum tokentype type)

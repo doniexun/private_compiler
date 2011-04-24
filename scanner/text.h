@@ -7,6 +7,7 @@
 extern char nextchar(void);
 extern void backchar(char);
 extern void inittexthandle(char *);
+extern int getlineno(void);
 
 #define dbg(fmt, arg...) fprintf(stderr, "%s "fmt"\n", __FUNCTION__, ##arg)
 

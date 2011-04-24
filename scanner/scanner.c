@@ -3,6 +3,38 @@
 #include "scan.h"
 #include "text.h"
 
+void handletoken(struct token *token)
+{
+	printf("\t%d", token->lineno);
+	switch (token->type) {
+	case tokenunknown:
+		printf("[UNKNOWN]\n");
+		break;
+	case tokeneof:
+		printf("[EOF]\n");
+		break;
+	case tokenerr:
+		printf("[ERROR] %s\n", token->buf);
+		break;
+	case tokensym:
+		printf("[symbol] %s\n", token->buf);
+		break;
+	case tokennum:
+		printf("[number] val=%s\n", token->buf);
+		break;
+	case tokenid:
+		if (reservedword(token->buf))
+			printf("[reserved word] %s\n", token->buf);
+		else
+			printf("[identifier] name=%s\n", token->buf);
+
+		break;
+	default:
+		printf("[token handling error]\n");
+		break;
+	}
+}
+
 void scan(char *source)
 {
 	struct token token;

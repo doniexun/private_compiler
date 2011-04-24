@@ -50,11 +50,17 @@ static void fillbuf(void)
 	textbufend = n - 1;
 }
 
-//#define LINE_BUF
+#define LINE_BUF
 #ifdef LINE_BUF
+
 static char linebuf[LINEBUFSIZE];
 static char *line;
 static int lineno;
+
+int getlineno(void)
+{
+	return lineno;
+}
 
 static char *nextline(void)
 {
@@ -66,6 +72,9 @@ static char *nextline(void)
 			fillbuf();
 		*p = textbuf[textbufpos++];
 	} while (*p != '\0' && *p != '\n');
+	/* update line number */
+	if (*p)
+		lineno++;
 	/* add '\0' to tail of line */
 	*++p = '\0';
 	return linebuf;
@@ -77,7 +86,7 @@ char nextchar(void)
 	if (!line || !*line) {
 		line = nextline();
 		if (*line)
-			printf("%-4d %s", lineno++, line);
+			printf("%-4d %s", lineno, line);
 	}
 	return *line++;
 }
