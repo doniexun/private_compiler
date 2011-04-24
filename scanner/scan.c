@@ -32,11 +32,13 @@ skip:
 		settokeneof(token);
 	/* symbol */
 	} else if (issymbol(c)) {
+		/* set token char firstly */
+		settokenchar(token, c);
 		switch (c) {
 		case ':':
 			if ((c = nextchar()) == '=') {
 				settokentype(token, tkassign);
-				settokenstr(token, ":=");
+				settokenchar(token, '=');
 			} else {
 				settokenerror(token);
 				backchar(c);
@@ -44,23 +46,30 @@ skip:
 			break;
 		case ';':
 			settokentype(token, tksemi);
+			break;
 		case '<':
 			settokentype(token, tklt);
+			break;
 		case '=':
 			settokentype(token, tkeq);
+			break;
 		case '+':
 			settokentype(token, tkadd);
+			break;
 		case '-':
 			settokentype(token, tksub);
+			break;
 		case '*':
 			settokentype(token, tkmul);
+			break;
 		case '/':
 			settokentype(token, tkdiv);
+			break;
 		case '(':
 			settokentype(token, tklparen);
+			break;
 		case ')':
 			settokentype(token, tkrparen);
-			settokenchar(token, c);
 			break;
 		default:
 			settokenerror(token);
