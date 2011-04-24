@@ -95,19 +95,19 @@ static inline int settokenreservedword(struct token *token)
 {
 	if (strcmp(token->buf, "if") == 0)
 		settokentype(token, tkif);
-	else if (strcmp(token->buf, "then"))
+	else if (strcmp(token->buf, "then") == 0)
 		settokentype(token, tkthen);
-	else if (strcmp(token->buf, "else"))
+	else if (strcmp(token->buf, "else") == 0)
 		settokentype(token, tkelse);
-	else if (strcmp(token->buf, "end"))
+	else if (strcmp(token->buf, "end") == 0)
 		settokentype(token, tkend);
-	else if (strcmp(token->buf, "repeat"))
+	else if (strcmp(token->buf, "repeat") == 0)
 		settokentype(token, tkrepeat);
-	else if (strcmp(token->buf, "until"))
+	else if (strcmp(token->buf, "until") == 0)
 		settokentype(token, tkuntil);
-	else if (strcmp(token->buf, "read"))
+	else if (strcmp(token->buf, "read") == 0)
 		settokentype(token, tkread);
-	else if (strcmp(token->buf, "write"))
+	else if (strcmp(token->buf, "write") == 0)
 		settokentype(token, tkwrite);
 }
 
