@@ -6,42 +6,7 @@
 /* some auxiliary function */
 static inline int isend(struct token *token)
 {
-	if (token->type == tokeneof)
-		return 1;
-	return 0;
-}
-
-static inline int isleftparenthesis(struct token *token)
-{
-	if (token->type == tokensym && token->buf[0] == '(')
-		return 1;
-	return 0;
-}
-
-static inline int isrightparenthesis(struct token *token)
-{
-	if (token->type == tokensym && token->buf[0] == ')')
-		return 1;
-	return 0;
-}
-static inline int ismulop(struct token *token)
-{
-	if (token->type == tokensym &&
-		(token->buf[0] == '*' || token->buf[0] == '/'))
-		return 1;
-	return 0;
-}
-static inline int isaddop(struct token *token)
-{
-	if (token->type == tokensym &&
-		(token->buf[0] == '+' || token->buf[0] == '-'))
-		return 1;
-	return 0;
-}
-
-static inline int isnumber(struct token *token)
-{
-	if (token->type == tokennum)
+	if (token->type == tkeof)
 		return 1;
 	return 0;
 }
@@ -111,75 +76,75 @@ static int factor(void)
 	int ret;
 
 	token = get_token();
-
-	if (isend(token)){
-		/* 
+	switch (token->type) {
+	case tkend:
+		/*
 		 * factor() is only called by term().
 		 * So factor() returns 1, which has bad effect on term().
 		 */
 		ret = 1;
-	} else if (isleftparenthesis(token)) {
+		break;
+	case tklparen:
 		/* exp will get next token */
 		ret = exp();
 		token = get_token();
-		if (!isrightparenthesis(token))
+		if (token->type != tkrparen)
 			experror();
-	} else if (isnumber(token)){
+		break;
+	case tknum:
 		ret = tokennumber(token);
-	} else {
+		break;
+	default:
 		experror();
+		break;
 	}
+
 	return ret;
 }
 
 static int term(void)
 {
 	struct token *token;
-	int ret;
+	int ret, cont;
 
 	ret = factor();
-
-	while (!isend(token = get_token())) {
-		if (!ismulop(token)) {
-			back_token();
-			break;
-		}
-		switch (token->buf[0]) {
-		case '*':
+	cont = 1;
+	while (cont && !isend(token = get_token())) {
+		switch (token->type) {
+		case tkmul:
 			ret *= factor();
 			break;
-		case '/':
+		case tkdiv:
 			ret /= factor();
 			break;
 		default:
-			experror();
+			back_token();
+			cont = 0;
 			break;
 		}
 	}
+
 	return ret;
 }
 
 static int exp(void)
 {
 	struct token *token;
-	int ret;
+	int ret, cont;
 
 	ret = term();
-
-	while (!isend(token = get_token())) {
-		if (!isaddop(token)) {
-			back_token();
-			break;
-		}
-		switch (token->buf[0]) {
-		case '+':
+	cont = 1;
+	while (cont && !isend(token = get_token())) {
+		switch (token->type) {
+		case tkadd:
 			ret += term();
 			break;
-		case '-':
+		case tksub:
 			ret -= term();
 			break;
 		default:
-			experror();
+			back_token();
+			cont = 0;
 			break;
 		}
 	}
