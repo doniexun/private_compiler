@@ -85,6 +85,7 @@ char nextchar(void)
 	/* end of file */
 	if (!line || !*line) {
 		line = nextline();
+#define OUTPUT_LINE
 #ifdef OUTPUT_LINE
 		if (*line)
 			printf("%-4d %s", lineno, line);

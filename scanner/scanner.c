@@ -19,6 +19,7 @@ void handletoken(struct token *token)
 	case tksub:
 	case tkmul:
 	case tkdiv:
+	case tksemi:
 	case tklparen:
 	case tkrparen:
 	case tkassign:

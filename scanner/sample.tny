@@ -5,10 +5,10 @@
 
 read x;
 if 0 < x then {don't comput if x <= 0}
-	fact := 1
+	fact := 1;
 	repeat
 		fact := fact * x;
-		x := x - 1;
+		x := x - 1
 	until x = 0;
 	write fact {out factorial of x}
 end
