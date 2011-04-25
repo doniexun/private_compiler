@@ -34,27 +34,29 @@ static inline struct token *lookahead_token(void)
 }
 
 /* auxiliary method: match and errorhandling  */
-void __syntaxerror(void)
+void __syntaxerror(struct token *token)
 {
-	struct token *next;
-	fprintf(stderr, "syntax error:%d:%s\n", __token.lineno, __token.buf);
-	next = get_token();
-	fprintf(stderr, "syntax next :%d:%s\n", next->lineno, next->buf);
-	next = get_token();
-	fprintf(stderr, "syntax next :%d:%s\n", next->lineno, next->buf);
+	fprintf(stderr, "syntax error at line %d: %s\n",
+					token->lineno, token->buf);
 	exit(EXIT_FAILURE);
 }
-#define DEBUG
+
+void _syntaxerror(void)
+{
+	struct token *token;
+	token = get_token();
+	__syntaxerror(token);
+}
+
 #ifdef DEBUG
 #define syntaxerror()		\
 do {				\
 	fprintf(stderr, "\n\n");\
-	pdbg(" syntax error");	\
-	__syntaxerror();	\
+	pdbg(" syntax error detected");	\
+	_syntaxerror();	\
 } while (0)
 #else
-#define syntaxerror() __syntaxerror()
-
+#define syntaxerror() _syntaxerror()
 #endif
 
 /* match token and error handling */
@@ -62,7 +64,7 @@ void matchtoken(struct token *token, enum tokentype tktype)
 {
 	/* syntax error handling */
 	if (token->type != tktype)
-		syntaxerror();
+		__syntaxerror(token);
 }
 
 /* advance token stream and match token */
@@ -119,7 +121,7 @@ struct syntaxnode *factor(void)
 		node = allocnode(syntaxexp, expid, token);
 		break;
 	default:
-		syntaxerror();
+		__syntaxerror(token);
 		break;
 	}
 
