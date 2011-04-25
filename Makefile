@@ -1,3 +1,4 @@
 # caculator code line number
 lines:
-	wc -l `find|grep "\.[ch]$$"`
+	@echo "lines    source code file"
+	@wc -l `find|grep "\.[ch]$$"`
