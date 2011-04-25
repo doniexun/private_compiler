@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "scan.h"
-#include "text.h"
+#include <common.h>
+#include <scan.h>
+#include <text.h>
 
 void inittoken(struct token *token)
 {

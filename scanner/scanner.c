@@ -1,7 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "scan.h"
-#include "text.h"
+#include <common.h>
+#include <scan.h>
+#include <text.h>
 
 void handletoken(struct token *token)
 {

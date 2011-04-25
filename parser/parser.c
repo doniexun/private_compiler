@@ -1,7 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "parse.h"
-#include "../scanner/text.h"
+#include <common.h>
+#include <parse.h>
+#include <text.h>
 
 char *nodeop(struct syntaxnode *node)
 {

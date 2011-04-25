@@ -1,7 +1,7 @@
 #ifndef __PARSE_H
 #define __PARSE_H
 
-#include "../scanner/scan.h"
+#include <scan.h>
 
 enum syntaxtype {
 	syntaxunknown,

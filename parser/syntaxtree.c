@@ -1,19 +1,13 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include "parse.h"
-#include "../scanner/scan.h"
+#include <common.h>
+#include <parse.h>
+#include <scan.h>
 
 char *stringdup(char *str)
 {
 	char *p;
 	int len;
 	len = strlen(str);
-	p = (char *)malloc(len + 1);
-	if (!p) {
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
+	p = (char *)xmalloc(len + 1);
 	memcpy(p, str, len);
 	p[len] = '\0';
 	return p;	
@@ -24,11 +18,7 @@ struct syntaxnode *allocnode(enum syntaxtype type,
 				struct token *token)
 {
 	struct syntaxnode *node;
-	node = (struct syntaxnode *)malloc(sizeof(*node));
-	if (!node) {
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
+	node = (struct syntaxnode *)xmalloc(sizeof(*node));
 
 	node->type = type;
 	if (type == syntaxstmt) {

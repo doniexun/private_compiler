@@ -1,7 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "../scanner/scan.h"
-#include "parse.h"
+#include <common.h>
+#include <scan.h>
+#include <parse.h>
 
 /* internal token stream */
 static struct token __token;

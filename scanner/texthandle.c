@@ -1,37 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <string.h>
-#include "text.h"
-
-void errexit(const char *str)
-{
-	if (!errno)
-		fprintf(stderr, "ERROR:%s\n", str);
-	else
-		perror(str);
-	exit(EXIT_FAILURE);
-}
-
-int xopen(const char *path, int flags)
-{
-	int fd;
-	fd = open(path, flags);
-	if (fd == -1)
-		errexit("open");
-	return fd;
-}
-FILE *xfopen(const char *path, const char *mode)
-{
-	FILE *file;
-	file = fopen(path, mode);
-	if (!file) {
-		errexit("fopen");
-		exit(EXIT_FAILURE);
-	}
-	return file;
-}
+#include <common.h>
+#include <text.h>
 
 /* only one source file at one time */
 static int sourcefd;

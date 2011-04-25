@@ -1,7 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "../scanner/scan.h"
-#include "../scanner/text.h"
+#include <common.h>
+#include <scan.h>
+#include <text.h>
 
 /* some auxiliary function */
 static inline int isend(struct token *token)
