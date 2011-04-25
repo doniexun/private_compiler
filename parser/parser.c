@@ -91,6 +91,34 @@ void printsyntaxtree(struct syntaxnode *root)
 	printsyntaxnode(root, 0);
 }
 
+void __freesyntaxnode(struct syntaxnode *node)
+{
+	if ((node->type == syntaxstmt && node->subtype.stmt == stmtread)
+		|| (node->type == syntaxexp && node->subtype.exp == expid))
+		free(node->attr.name);
+	free(node);
+}
+
+void freesyntaxnode(struct syntaxnode *node)
+{
+	struct syntaxnode *tmp;
+	int i;
+	/* traverse the sibling */
+	while (node) {
+		/* child */
+		for (i = 0; node->child[i]; i++)
+			freesyntaxnode(node->child[i]);
+		/* itself */
+		__freesyntaxnode(node);
+		node = node->sibling;
+	}
+}
+
+void freesyntaxtree(struct syntaxnode *root)
+{
+	freesyntaxnode(root);
+}
+
 void usage(void)
 {
 	fprintf(stderr, "Usage: parser sourcefile\n");
@@ -109,6 +137,6 @@ int main(int argc, char **argv)
 	/* traverse syntax tree */
 	printsyntaxtree(root);
 	/* free the syntax tree */
-//	freesyntaxtree(root);
+	freesyntaxtree(root);
 	return 0;
 }
