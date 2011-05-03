@@ -6,6 +6,7 @@ void errexit(char *str)
 		perror(str);
 	else
 		fprintf(stderr, "ERROR %s\n", str ? str : "unknown");
+	exit(EXIT_FAILURE);
 }
 
 int xopen(const char *path, int mode)
