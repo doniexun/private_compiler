@@ -1,6 +1,7 @@
 #include <common.h>
 #include <parse.h>
 #include <scan.h>
+#include <string.h>
 
 char *stringdup(char *str)
 {
@@ -19,7 +20,7 @@ struct syntaxnode *allocnode(enum syntaxtype type,
 {
 	struct syntaxnode *node;
 	node = (struct syntaxnode *)xmalloc(sizeof(*node));
-
+	memset(node, 0x0, sizeof(*node));
 	node->type = type;
 	if (type == syntaxstmt) {
 		node->subtype.stmt = subtype;

@@ -26,3 +26,12 @@ void *xmalloc(size_t size)
 		errexit("malloc");
 	return p;
 }
+
+FILE *xfopen(const char *path, const char *mode)
+{
+	FILE *f;
+	f = fopen(path, mode);
+	if (!f)
+		errexit("fopen");
+	return f;
+}

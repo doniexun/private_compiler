@@ -9,7 +9,9 @@
 #include <errno.h>
 
 /* xlib.c extern function */
-extern int xfopen(const char *, int);
+extern int xopen(const char *, int);
+extern FILE *xfopen(const char *, const char *);
 extern void *xmalloc(size_t);
+extern void errexit(char *str);
 
 #endif

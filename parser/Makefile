@@ -12,6 +12,8 @@ parser:$(OBJS)
 	gcc $(CFLAGS) $^ -o $@
 parser.o:parser.c
 	gcc $(CFLAGS) $< -c -o $@
+bison_parser.o:parser.c
+	gcc $(CFLAGS) -DBISON_PARSER $< -c -o $@
 parse.o:parse.c
 	gcc $(CFLAGS) $< -c -o $@
 syntaxtree.o:syntaxtree.c

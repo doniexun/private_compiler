@@ -24,6 +24,8 @@ char *nodeop(struct syntaxnode *node)
 
 void __printsyntaxnode(struct syntaxnode *node, int depth)
 {
+	if (!node)
+		errexit("NULL node");
 	/* fill space */
 	for (; depth; depth--)
 		printf("    ");
@@ -87,6 +89,9 @@ void printsyntaxnode(struct syntaxnode *node, int depth)
 
 void printsyntaxtree(struct syntaxnode *root)
 {
+#ifdef BISON_PARSER
+	printf("bison syntax tree\n");
+#endif
 	printsyntaxnode(root, 0);
 }
 
@@ -127,15 +132,19 @@ void usage(void)
 int main(int argc, char **argv)
 {
 	struct syntaxnode *root;
+#ifndef BISON_PARSER
 	if (argc != 2)
 		usage();
 	/* init text handling of source file */
 	inittexthandle(argv[1]);
+#endif
 	/* real parse */
 	root = parse();
 	/* traverse syntax tree */
 	printsyntaxtree(root);
+#ifndef BISON_PARSER
 	/* free the syntax tree */
 	freesyntaxtree(root);
+#endif
 	return 0;
 }

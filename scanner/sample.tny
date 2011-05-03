@@ -4,6 +4,10 @@
 }{test comment scanning}
 
 read x;
+write x;
+read x;
+write x;
+read x;
 if 0 < x then {don't comput if x <= 0}
 	fact := 1;
 	repeat

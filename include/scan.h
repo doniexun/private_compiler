@@ -56,15 +56,16 @@ static inline void settokenstr(struct token *token, char *str)
 		token->buf[token->pos++] = *str++;
 }
 
+#ifndef BUILT_IN
 static inline int isdigit(char c)
 {
 	return (c >= '0' && c <= '9') ? 1 : 0;
 }
+#endif
 
 static inline int isletter(char c)
 {
 	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) ? 1 : 0;
-
 }
 
 static inline int iswhitespace(char c)
