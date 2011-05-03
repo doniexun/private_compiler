@@ -10,7 +10,7 @@ char *stringdup(char *str)
 	p = (char *)xmalloc(len + 1);
 	memcpy(p, str, len);
 	p[len] = '\0';
-	return p;	
+	return p;
 }
 
 struct syntaxnode *allocnode(enum syntaxtype type,

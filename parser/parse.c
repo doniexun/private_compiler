@@ -74,7 +74,7 @@ void match(enum tokentype tktype)
 	matchtoken(token, tktype);
 }
 
-/* 
+/*
  * main parse method
  *
  * EBNF: stmt-sequence -> statement { ; statment }
@@ -134,7 +134,7 @@ struct syntaxnode *term(void)
 {
 	struct syntaxnode *node, *parent;
 	struct token *token;
-	
+
 	/* fator */
 	node = factor();
 	parent = NULL;
@@ -160,7 +160,7 @@ struct syntaxnode *simple_exp(void)
 {
 	struct syntaxnode *node, *parent;
 	struct token *token;
-	
+
 	/* term */
 	node = term();
 	parent = NULL;
@@ -186,12 +186,12 @@ struct syntaxnode *exp(void)
 {
 	struct syntaxnode *node, *parent;
 	struct token *token;
-	
+
 	node = simple_exp();
 	switch (tokenahead->type) {
 	case tkeq:
 	case tklt:
-		token = get_token();	
+		token = get_token();
 		parent = allocnode(syntaxexp, expop, token);
 		parent->child[0] = node;
 		parent->child[1] = simple_exp();
@@ -201,7 +201,7 @@ struct syntaxnode *exp(void)
 	default:
 		break;
 	}
-	
+
 	return node;
 }
 
@@ -212,11 +212,11 @@ struct syntaxnode *write_stmt(void)
 {
 	struct syntaxnode *node;
 	struct token *token;
-	
+
 	match(tkwrite);
 	node = allocnode(syntaxstmt, stmtwrite, NULL);
 	node->child[0] = exp();
-	
+
 	return node;
 }
 
@@ -227,12 +227,12 @@ struct syntaxnode *read_stmt(void)
 {
 	struct syntaxnode *node;
 	struct token *token;
-	
+
 	match(tkread);
 	token = get_token();
 	matchtoken(token, tkid);
 	node = allocnode(syntaxstmt, stmtread, token);
-	
+
 	return node;
 }
 
@@ -252,7 +252,7 @@ struct syntaxnode *assign_stmt(void)
 	match(tkassign);
 	/* exp */
 	node->child[0] = exp();
-	
+
 	return node;
 }
 
@@ -263,7 +263,7 @@ struct syntaxnode *repeat_stmt(void)
 {
 	struct syntaxnode *node;
 	struct token *token;
-	
+
 	/* parse `repeat stmt-sequence` */
 	token = get_token();
 	matchtoken(token, tkrepeat);
@@ -283,16 +283,16 @@ struct syntaxnode *if_stmt(void)
 {
 	struct syntaxnode *node;
 	struct token *token;
-	
+
 	/* parse `if exp` */
 	token = get_token();
 	matchtoken(token, tkif);
 	node = allocnode(syntaxstmt, stmtif, token);
 	node->child[0] = exp();
 	/* parse `then stmt-sequence` */
-	
+
 	match(tkthen);
-	
+
 	node->child[1] = stmt_sequence();
 	/* parse `[ else stmt-sequence]` */
 	if (tokenahead->type == tkelse) {
@@ -301,7 +301,7 @@ struct syntaxnode *if_stmt(void)
 	}
 	/* parse `end` */
 	match(tkend);
-	
+
 	return node;
 }
 
@@ -312,7 +312,7 @@ struct syntaxnode *if_stmt(void)
 struct syntaxnode *statement(void)
 {
 	struct syntaxnode *node;
-	
+
 	switch (tokenahead->type) {
 	case tkif:
 		node = if_stmt();
@@ -334,7 +334,7 @@ struct syntaxnode *statement(void)
 		syntaxerror();
 		break;
 	}
-	
+
 	return node;
 }
 
@@ -344,7 +344,7 @@ struct syntaxnode *statement(void)
 struct syntaxnode *stmt_sequence(void)
 {
 	struct syntaxnode *node, *prev;
-	
+
 	node = statement();
 	/* parse `{ ; statement }` */
 	prev = node;

@@ -2,7 +2,7 @@
 
 void errexit(char *str)
 {
-	if (errno)	
+	if (errno)
 		perror(str);
 	else
 		fprintf(stderr, "ERROR %s\n", str ? str : "unknown");
