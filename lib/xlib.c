@@ -8,7 +8,7 @@ void errexit(char *str)
 		fprintf(stderr, "ERROR %s\n", str ? str : "unknown");
 }
 
-int *xopen(const char *path, int mode)
+int xopen(const char *path, int mode)
 {
 	int fd;
 	fd = open(path, mode);
