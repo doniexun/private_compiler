@@ -2,6 +2,7 @@
 #include <parse.h>
 #include <scan.h>
 #include <string.h>
+
 /* auxiliary dummy method for traverse parameter */
 void nullproc(struct syntaxnode *node, int depth)
 {
@@ -28,17 +29,6 @@ void traverse(struct syntaxnode *node, int depth,
 	}
 }
 
-char *stringdup(char *str)
-{
-	char *p;
-	int len;
-	len = strlen(str);
-	p = (char *)xmalloc(len + 1);
-	memcpy(p, str, len);
-	p[len] = '\0';
-	return p;
-}
-
 struct syntaxnode *allocnode(enum syntaxtype type,
 				int subtype,
 				struct token *token)
@@ -48,6 +38,7 @@ struct syntaxnode *allocnode(enum syntaxtype type,
 	memset(node, 0x0, sizeof(*node));
 	node->type = type;
 	node->datatype = dtvoid;
+	node->lineno = token->lineno;
 	if (type == syntaxstmt) {
 		node->subtype.stmt = subtype;
 		switch (subtype) {
@@ -87,6 +78,7 @@ struct syntaxnode *allocnode(enum syntaxtype type,
 	} else {
 		/* stmtunknown == expunknown */
 		node->subtype.stmt = stmtunknown;
+		printf("unknown node\n");
 	}
 	return node;
 }

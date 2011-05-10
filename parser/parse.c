@@ -2,6 +2,14 @@
 #include <scan.h>
 #include <parse.h>
 
+static char *tokenstr[] = {
+	"unknown","EOF", "err",
+	"if", "then", "else", "end",
+	"repeat", "until", "read", "write",
+        "=", "<", "+", "-", "*", "/", ":=", ":", "(", ")",
+	"number", "identifier"
+};
+
 /* internal token stream */
 static struct token __token;
 static struct token __tokenahead;
@@ -35,9 +43,9 @@ static inline struct token *lookahead_token(void)
 /* auxiliary method: match and errorhandling  */
 void __syntaxerror(struct token *token)
 {
-	fprintf(stderr, "syntax error at line %d: %s\n",
-					token->lineno, token->buf);
-	exit(EXIT_FAILURE);
+	fprintf(stderr,
+		"syntax error at line %d: error token `%s`\n",
+				token->lineno, token->buf);
 }
 
 void _syntaxerror(void)
@@ -45,6 +53,7 @@ void _syntaxerror(void)
 	struct token *token;
 	token = get_token();
 	__syntaxerror(token);
+	exit(EXIT_FAILURE);
 }
 
 #ifdef DEBUG
@@ -62,8 +71,11 @@ do {				\
 void matchtoken(struct token *token, enum tokentype tktype)
 {
 	/* syntax error handling */
-	if (token->type != tktype)
+	if (token->type != tktype) {
 		__syntaxerror(token);
+		fprintf(stderr, "\tright token should be `%s`\n", (char *)tokenstr[tktype]);
+		exit(EXIT_FAILURE);
+	}
 }
 
 /* advance token stream and match token */
@@ -360,7 +372,10 @@ struct syntaxnode *stmt_sequence(void)
 
 struct syntaxnode *program(void)
 {
-	return stmt_sequence();
+	struct syntaxnode *node;
+	node = stmt_sequence();
+	match(tkeof);
+	return node;
 }
 
 struct syntaxnode *parse(void)
