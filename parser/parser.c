@@ -92,10 +92,18 @@ void printsyntaxtree(struct syntaxnode *root)
 #ifdef BISON_PARSER
 	printf("bison syntax tree\n");
 #endif
+#ifdef GENERAL_TRAVERSE
+	traverse(root, 0, __printsyntaxnode, nullproc);
+#else
 	printsyntaxnode(root, 0);
+#endif
 }
 
+#ifdef GENERAL_TRAVERSE
+void __freesyntaxnode(struct syntaxnode *node, int dummydepth)
+#else
 void __freesyntaxnode(struct syntaxnode *node)
+#endif
 {
 	if ((node->type == syntaxstmt && node->subtype.stmt == stmtread)
 		|| (node->type == syntaxexp && node->subtype.exp == expid))
@@ -113,14 +121,23 @@ void freesyntaxnode(struct syntaxnode *node)
 		for (i = 0; node->child[i]; i++)
 			freesyntaxnode(node->child[i]);
 		/* itself */
+#ifdef GENERAL_TRAVERSE
+		/* for successful compiling */
+		__freesyntaxnode(node, 0);
+#else
 		__freesyntaxnode(node);
+#endif
 		node = node->sibling;
 	}
 }
 
 void freesyntaxtree(struct syntaxnode *root)
 {
+#ifdef GENERAL_TRAVERSE
+	traverse(root, 0, nullproc, __freesyntaxnode);
+#else
 	freesyntaxnode(root);
+#endif
 }
 
 void usage(void)
