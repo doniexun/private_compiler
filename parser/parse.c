@@ -213,8 +213,9 @@ struct syntaxnode *write_stmt(void)
 	struct syntaxnode *node;
 	struct token *token;
 
-	match(tkwrite);
-	node = allocnode(syntaxstmt, stmtwrite, NULL);
+	token = get_token();
+	matchtoken(token, tkwrite);
+	node = allocnode(syntaxstmt, stmtwrite, token);
 	node->child[0] = exp();
 
 	return node;
