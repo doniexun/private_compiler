@@ -10,4 +10,6 @@ clean:
 
 lines:
 	@echo "lines    source code file"
-	@wc -l `find|grep "\.[ch]$$"`
+	@wc -l `find | grep "\.[ch]$$"`
+	@echo "lines    flex/bison file"
+	@wc -l `find | grep "\.[yl]$$"`
