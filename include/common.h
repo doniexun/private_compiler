@@ -13,5 +13,6 @@ extern int xopen(const char *, int);
 extern FILE *xfopen(const char *, const char *);
 extern void *xmalloc(size_t);
 extern void errexit(char *str);
+extern char *stringdup(char *str);
 
 #endif

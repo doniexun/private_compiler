@@ -1,5 +1,16 @@
 #include <common.h>
 
+char *stringdup(char *str)
+{
+        char *p;
+        int len;
+        len = strlen(str);
+        p = (char *)xmalloc(len + 1);
+        memcpy(p, str, len);
+        p[len] = '\0';
+        return p;
+}
+
 void errexit(char *str)
 {
 	if (errno)

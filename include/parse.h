@@ -35,7 +35,7 @@ union subtypes {
 enum datatype {
 	dtvoid,
 	dtinteger,
-	dtboolean,
+	dtboolean
 };
 
 #define MAX_CHILDS 3
@@ -50,6 +50,7 @@ struct syntaxnode {
 		enum tokentype tktype;		/* token type */
 	} attr;
 	enum datatype datatype;			/* data structure type */
+	int lineno;				/* line number */
 	struct syntaxnode *child[MAX_CHILDS];	/* children node */
 	struct syntaxnode *sibling;		/* next sibling */
 };
