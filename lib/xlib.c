@@ -4,6 +4,8 @@ char *stringdup(char *str)
 {
         char *p;
         int len;
+	if (!str)
+		return NULL;
         len = strlen(str);
         p = (char *)xmalloc(len + 1);
         memcpy(p, str, len);

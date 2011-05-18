@@ -1,10 +1,16 @@
 #ifndef __LIST_H
 #define __LIST_H
 
+#ifndef NULL
+#define NULL ((void *)0)
+#endif
+
 struct list_head {
 	struct list_head *prev;
 	struct list_head *next;
 };
+
+#define list_empty(list) ((list)->prev == (list))
 
 static inline void list_init(struct list_head *head)
 {
@@ -30,6 +36,19 @@ static inline void list_add_tail(struct list_head *list,
 				struct list_head *head)
 {
 	__list_add(list, head->prev, head);
+}
+
+static inline void __list_del(struct list_head *prev, struct list_head *next)
+{
+	prev->next = next;
+	next->prev = prev;
+}
+
+static inline void list_del(struct list_head *list)
+{
+	__list_del(list->prev, list->next);
+	list->prev = NULL;
+	list->next = NULL;
 }
 
 #define list_entry(p, type, member)\
