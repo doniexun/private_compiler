@@ -59,4 +59,6 @@ enum opcodes {
 #define FALSE 0
 #define TRUE 1
 
+extern int debug;
+
 #endif	/* pcode.h */

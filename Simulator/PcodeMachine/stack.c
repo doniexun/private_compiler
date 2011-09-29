@@ -37,6 +37,7 @@ void exit_pm_stack(void)
 		list_del(&stack_top->list);
 		free(stack_top);
 	}
+	printf("[exit] free stack\n");
 }
 
 struct stack *alloc_stack(unsigned int e)

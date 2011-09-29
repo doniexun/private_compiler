@@ -8,12 +8,12 @@ caculator:caculator.o ../scanner/scan.o ../scanner/texthandle.o ../lib/xlib.o
 caculator.o:caculator.c
 	$(CC) $(CFLAGS) $< -c -o $@
 ../scanner/scan.o:../scanner/scan.c
-	(cd ../scanner; make scan.o)
+	@make -C ../scanner scan.o
 ../scanner/texthandle.o:../scanner/texthandle.c
-	(cd ../scanner; make texthandle.o)
+	@make -C ../scanner texthandle.o
 ../lib/xlib.o:../lib/xlib.c
-	(cd ../lib; make xlib.o)
+	@make -C ../lib xlib.o
 clean:
 	rm -f caculator *.o
-	(cd ../scanner; make clean)
-	(cd ../lib; make clean)
+	@make -C ../scanner clean
+	@make -C ../lib clean

@@ -1,0 +1,20 @@
+{
+       Sample Language
+       tiny language: compute factorial(x!)
+}
+
+{ read input }
+read x;
+
+if 0 < x then
+
+	{ calculate factorial of x }
+	fact := 1;
+	repeat
+		fact := fact * x;
+		x := x - 1
+	until x = 0;
+
+	{ output factorial of x }
+	write fact
+end

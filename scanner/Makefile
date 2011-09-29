@@ -10,8 +10,8 @@ scan.o:scan.c
 texthandle.o:texthandle.c
 	$(CC) $(CFLAGS) $^ -c -o $@
 ../lib/xlib.o:../lib/xlib.c
-	(cd ../lib; make xlib.o)
+	@make -C ../lib xlib.o
 	
 clean:
 	rm -f scanner *.o
-	(cd ../lib; make clean)
+	@make -C ../lib clean

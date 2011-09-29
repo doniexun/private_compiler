@@ -21,4 +21,5 @@ void exit_pm_memory(void)
 {
 	if (memory)
 		free(memory);
+	printf("[exit] free memory\n");
 }

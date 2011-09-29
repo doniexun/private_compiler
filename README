@@ -8,6 +8,15 @@ How to implementate?
   Although the book includes all the codes of TINY I refered to,
     the code in this project is written by myself;-)
 
+How to use?
+ $ make
+ $ CodeGenerator/pcode/generator sample.tny > sample.tm
+ $ Simulator/PcodeMachine/pm sample.tm
+ ( run pmachine with sample.tm to calculte fatorial of input value )
+ P-machine read: 5           ( input 5<ENTER> )
+ ( calculating... )
+ P-machine write: 120        ( result is 5! )
+
 Author:
   Xiaochen Wang <wangxiaochen0@gmail.com>
 

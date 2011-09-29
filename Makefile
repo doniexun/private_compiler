@@ -1,19 +1,19 @@
 MAKEFLAGS += --no-print-directory
 
 all:
-	@(cd scanner; make)
-	@(cd parser; make)
-	@(cd SematicAnalyzer; make)
-	@(cd calculator; make)
-	@(cd Simulator/PcodeMachine; make)
-	@(cd CodeGenerator/pcode; make)
+	@make -C scanner
+	@make -C parser
+	@make -C SematicAnalyzer
+	@make -C calculator
+	@make -C Simulator/PcodeMachine
+	@make -C CodeGenerator/pcode
 clean:
-	@(cd scanner; make clean)
-	@(cd parser; make clean)
-	@(cd calculator; make clean)
-	@(cd SematicAnalyzer; make clean)
-	@(cd Simulator/PcodeMachine; make clean)
-	@(cd CodeGenerator/pcode; make clean)
+	@make -C scanner clean
+	@make -C parser clean
+	@make -C calculator clean
+	@make -C SematicAnalyzer clean
+	@make -C Simulator/PcodeMachine clean
+	@make -C CodeGenerator/pcode clean
 
 # caculator code line number
 lines:

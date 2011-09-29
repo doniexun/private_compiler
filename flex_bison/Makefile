@@ -10,9 +10,9 @@ parser: ../parser/bison_parser.o\
 	parse.o scan.o
 	$(CC) $^ -o $@
 ../parser/bison_parser.o:../parser/parser.c
-	(cd ../parser; make bison_parser.o)
+	@make -C ../parser bison_parser.o
 ../parser/syntaxtree.o:../parser/syntaxtree.c
-	(cd ../parser; make syntaxtree.o)
+	@make -C ../parser syntaxtree.o
 parse.o:parse.c
 	$(CC) $(CFLAGS) -DBUILT_IN $< -c -o $@
 
@@ -32,8 +32,8 @@ scan.c:scan.l
 	$(LEX) -o $@ $<
 
 ../lib/xlib.o:../lib/xlib.c
-	(cd ../lib; make xlib.o)
+	@make -C ../lib xlib.o
 clean:
-	(cd ../lib; make clean)
-	(cd ../parser; make clean)
+	@make -C ../lib clean
+	@make -C ../parser clean
 	rm -f scan.c *.o scanner parse.c parser *.output parse.h

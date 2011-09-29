@@ -17,17 +17,17 @@ symtab.o:symtab.c
 typecheck.o:typecheck.c
 	gcc $(CFLAGS) $< -c -o $@
 ../parser/parse.o:../parser/parse.c
-	(cd ../parser; make parse.o)
+	@make -C ../parser parse.o
 ../parser/syntaxtree.o:../parser/syntaxtree.c
-	(cd ../parser; make syntaxtree.o)
+	@make -C ../parser syntaxtree.o
 ../scanner/texthandle.o:../scanner/texthandle.c
-	(cd ../scanner; make texthandle.o)
+	@make -C ../scanner texthandle.o
 ../scanner/scan.o:../scanner/scan.c
-	(cd ../scanner; make scan.o)
+	@make -C ../scanner scan.o
 ../lib/xlib.o:../lib/xlib.c
-	(cd ../lib; make xlib.o)
+	@make -C ../lib xlib.o
 clean:
 	rm -f *.o analyzer
-	(cd ../parser; make clean)
-	(cd ../scanner; make clean)
-	(cd ../lib; make clean)
+	@make -C ../parser clean
+	@make -C ../scanner clean
+	@make -C ../lib clean

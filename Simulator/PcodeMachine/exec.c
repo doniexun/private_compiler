@@ -3,6 +3,12 @@
 
 extern unsigned int *memory;
 
+#define opdbg(fmt, args...)\
+	do {\
+		if (debug)\
+			fprintf(stderr, fmt, ##args);\
+	} while (0)
+
 /* a, b should be signed integer */
 unsigned int pm_op(unsigned int op, int a, int b)
 {
@@ -45,13 +51,14 @@ void run_machine(struct instruction *flow)
 {
 	struct instruction *ins;
 	unsigned int stop, top, toptop;
+	printf("\nP-machine: running...\n");
 	stop = 0;
 	ins = flow;
 	while (ins && !stop) {
-		fprintf(stderr, "OPCODE %s", ins->opcodestr);
+		opdbg("OPCODE %s", ins->opcodestr);
 		if (ins->operandstr)
-			fprintf(stderr, " %s", ins->operandstr);
-		fprintf(stderr, "\n");
+			opdbg(" %s", ins->operandstr);
+		opdbg("\n");
 
 		switch (ins->opcode) {
 		case OPCODE_NOP:

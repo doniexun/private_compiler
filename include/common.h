@@ -7,6 +7,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <unistd.h>
 
 /* xlib.c extern function */
 extern int xopen(const char *, int);

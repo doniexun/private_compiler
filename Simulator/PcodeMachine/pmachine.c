@@ -8,6 +8,9 @@ extern void init_pm_memory(void);
 extern struct instruction *gen_instruction(FILE *);
 extern void free_instruction(struct instruction *);
 
+char *sourcefile;
+int debug;
+
 FILE *load_file(char *file)
 {
 	FILE *f;
@@ -17,6 +20,7 @@ FILE *load_file(char *file)
 
 void exit_machine(struct instruction *flow)
 {
+	printf("\nP-machine: exiting...\n");
 	/* free P-machine resources */
 	exit_pm_memory();
 	exit_pm_stack();
@@ -26,6 +30,7 @@ void exit_machine(struct instruction *flow)
 struct instruction *init_machine(FILE *f)
 {
 	struct instruction *execflow;
+	printf("\nP-machine: initing...\n");
 	/* generate machine codes: executable instruction */
 	execflow = gen_instruction(f);
 	/* init stack */
@@ -37,18 +42,44 @@ struct instruction *init_machine(FILE *f)
 
 void usage(void)
 {
-	fprintf(stderr, "pmachine pcodefile\n");
+	fprintf(stderr,
+		"pmachine [OPTIONS] pcodefile\n"
+		"OPTIONS:\n"
+		"   -h    display help information\n"
+		"   -d    display debug information\n"
+	);
 	exit(EXIT_FAILURE);
+}
+
+void parse_args(int argc, char **argv)
+{
+	int c;
+	sourcefile = NULL;
+	debug = 0;
+	opterr = 0;
+	while ((c = getopt(argc, argv, "dh")) != -1) {
+		switch (c) {
+		case 'd':
+			debug = 1;
+			break;
+		case 'h':
+		default:
+			usage();
+			break;
+		}
+	}
+	if (optind != argc - 1)
+		usage();
+	sourcefile = argv[optind];
 }
 
 int main(int argc, char **argv)
 {
 	struct instruction *flow;
 	FILE *pcodefile = NULL;
-	if (argc != 2)
-		usage();
+	parse_args(argc, argv);
 	/* load pcode file */
-	pcodefile = load_file(argv[1]);
+	pcodefile = load_file(sourcefile);
 	/* init P-machine runtime environment */
 	flow = init_machine(pcodefile);
 	/* run P-machine */

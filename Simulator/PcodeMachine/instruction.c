@@ -296,7 +296,6 @@ int getcode(FILE *f, char **opcode, char **operand)
 		/* get operand */
 		skip_op(&p);
 		if (*p != '\0') {
-
 			/* make opcode null-terminated */
 			*p++ = '\0';
 			skip_whitespace(&p);
@@ -382,7 +381,8 @@ struct instruction *gen_instruction(FILE *f)
 			break;
 		}
 		/* debug */
-		debug_instruction(current);
+		if (debug)
+			debug_instruction(current);
 		/* for next loop */
 		prev->next = current;
 		prev = current;
@@ -392,7 +392,8 @@ struct instruction *gen_instruction(FILE *f)
 	labtrans(&labtbl, &labset);
 	/* free labels */
 	labfree(&labtbl, &labset);
-	debug_flow(head);
+	if (debug)
+		debug_flow(head);
 	printf("[init] instructs have been loaded\n");
 	return head;
 }

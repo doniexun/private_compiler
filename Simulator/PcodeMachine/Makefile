@@ -16,7 +16,7 @@ pmachine.o:pmachine.c
 stack.o:stack.c
 	$(CC) $(CFLAGS) -c -o $@ $^
 ../../lib/xlib.o:../../lib/xlib.c
-	(cd ../../lib; make xlib.o)
+	make -C ../../lib xlib.o
 
 debug:test_stack
 test_stack:dstack.o ../../lib/xlib.o
@@ -26,4 +26,4 @@ dstack.o:stack.c
 
 clean:
 	rm -rf pm *.o test_*
-	(cd ../../lib; make clean)
+	@make -C ../../lib clean
