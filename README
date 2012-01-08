@@ -10,12 +10,16 @@ How to implementate?
 
 How to use?
  $ make
- $ CodeGenerator/pcode/generator sample.tny > sample.tm
- $ Simulator/PcodeMachine/pm sample.tm
- ( run pmachine with sample.tm to calculte fatorial of input value )
+ $ CodeGenerator/pcode/generator examples/fact.tny > fact.tm
+ $ Simulator/PcodeMachine/pm fact.tm
+ ( run pmachine with fact.tm to calculte fatorial of input value )
  P-machine read: 5           ( input 5<ENTER> )
  ( calculating... )
  P-machine write: 120        ( result is 5! )
+
+Other version?
+ There is a python-version code in Py/ and
+ flex/bison-version code in flex_bison/.
 
 Author:
   Xiaochen Wang <wangxiaochen0@gmail.com>
