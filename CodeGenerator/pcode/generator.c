@@ -6,7 +6,7 @@ extern void checktype(struct syntaxnode *);
 
 void usage(void)
 {
-	fprintf(stderr, 
+	fprintf(stderr,
 		"P-code generator!\n"
 		"Usage: generator sourcefile [> pcodefile]\n");
 	exit(EXIT_FAILURE);

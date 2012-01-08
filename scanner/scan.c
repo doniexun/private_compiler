@@ -10,6 +10,7 @@ void inittoken(struct token *token)
 	memset(token->buf, 0x0, sizeof(token->buf));
 }
 
+
 void gettoken(struct token *token)
 {
 	char c;
@@ -33,6 +34,14 @@ skip:
 		/* set token char firstly */
 		settokenchar(token, c);
 		switch (c) {
+		case '!':
+			if ((c = nextchar()) == '=') {
+				settokentype(token, tkneq);
+			} else {
+				settokenerror(token);
+				backchar(c);
+			}
+			break;
 		case ':':
 			if ((c = nextchar()) == '=') {
 				settokentype(token, tkassign);
@@ -62,6 +71,9 @@ skip:
 			break;
 		case '/':
 			settokentype(token, tkdiv);
+			break;
+		case '%':
+			settokentype(token, tkmod);
 			break;
 		case '(':
 			settokentype(token, tklparen);

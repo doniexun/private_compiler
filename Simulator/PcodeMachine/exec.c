@@ -26,6 +26,9 @@ unsigned int pm_op(unsigned int op, int a, int b)
 	case OPCODE_DVI:
 		ret = a / b;
 		break;
+	case OPCODE_MOD:
+		ret = a % b;
+		break;
 	case OPCODE_EQU:
 		ret = (a == b);
 		break;
@@ -81,6 +84,7 @@ void run_machine(struct instruction *flow)
 		case OPCODE_SBI:
 		case OPCODE_MPI:
 		case OPCODE_DVI:
+		case OPCODE_MOD:
 		case OPCODE_EQU:
 		case OPCODE_NEQ:
 		case OPCODE_GRT:

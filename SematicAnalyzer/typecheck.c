@@ -79,9 +79,11 @@ void typecheck(struct syntaxnode *node, int depth)
 			case tksub:
 			case tkmul:
 			case tkdiv:
+			case tkmod:
 				node->datatype = dtinteger;
 				break;
 			case tkeq:
+			case tkneq:
 			case tklt:
 				node->datatype = dtboolean;
 				break;

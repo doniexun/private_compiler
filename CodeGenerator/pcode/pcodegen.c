@@ -90,6 +90,9 @@ void pcodeexpop(struct syntaxnode *node)
 	case tkeq:
 		pcodestr("equ", "", "=");
 		break;
+	case tkneq:
+		pcodestr("neq", "", "!=");
+		break;
 	case tklt:
 		/* litte: < */
 		pcodestr("lt", "", "<");
@@ -105,6 +108,9 @@ void pcodeexpop(struct syntaxnode *node)
 		break;
 	case tkdiv:
 		pcodestr("dvi", "", NULL);
+		break;
+	case tkmod:
+		pcodestr("mod", "", NULL);
 		break;
 	default:
 		comment("unrecognized exp operation");
@@ -223,7 +229,7 @@ void nodegen(struct syntaxnode *node)
 	}
 }
 
-/* 
+/*
  * preoder traversal of node tree
  * traversing node's sibling, not children
  */

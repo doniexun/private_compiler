@@ -9,8 +9,9 @@ enum tokentype {
 	tkrepeat, tkuntil,		/* repeat until */
 	tkread, tkwrite,		/* read write */
 	/* special symbol */
-	tkeq, tklt,			/* = < */
+	tkeq, tkneq, tklt,		/* = != < */
 	tkadd, tksub, tkmul, tkdiv,	/* + - * / */
+	tkmod,				/* % */
 	tkassign, tksemi,		/* := ; */
 	tklparen, tkrparen,		/* ( ) */
 	/* multicharacter tokens */
@@ -80,8 +81,10 @@ static inline int issymbol(char c)
 	case '-':
 	case '*':
 	case '/':
+	case '%':
 	case ';':
 	case ':':
+	case '!':
 	case '=':
 	case '<':
 	case '(':

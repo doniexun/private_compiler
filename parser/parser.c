@@ -17,6 +17,8 @@ char *nodeop(struct syntaxnode *node)
 		return "*";
 	case tkdiv:
 		return "/";
+	case tkmod:
+		return "%";
 	default:
 		return "[unknown op]";
 	}

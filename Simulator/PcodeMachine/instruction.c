@@ -79,9 +79,11 @@ struct instruction *alloc_instruction(char *opcode, char *operand)
 		ins->opcode = OPCODE_MPI;
 	else if (strcmp(opcode, "dvi") == 0)
 		ins->opcode = OPCODE_DVI;
+	else if (strcmp(opcode, "mod") == 0)
+		ins->opcode = OPCODE_MOD;
 	else if (strcmp(opcode, "equ") == 0)
 		ins->opcode = OPCODE_EQU;
-	else if (strcmp(opcode, "NEQ") == 0)
+	else if (strcmp(opcode, "neq") == 0)
 		ins->opcode = OPCODE_NEQ;
 	else if (strcmp(opcode, "grt") == 0)
 		ins->opcode = OPCODE_GRT;

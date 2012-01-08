@@ -6,7 +6,7 @@ static char *tokenstr[] = {
 	"unknown","EOF", "err",
 	"if", "then", "else", "end",
 	"repeat", "until", "read", "write",
-        "=", "<", "+", "-", "*", "/", ":=", ":", "(", ")",
+        "=", "!=", "<", "+", "-", "*", "/", ":=", ":", "(", ")",
 	"number", "identifier"
 };
 
@@ -151,7 +151,7 @@ struct syntaxnode *term(void)
 	node = factor();
 	parent = NULL;
 	/* { mulop factor} */
-	while (tokenahead->type == tkmul || tokenahead->type == tkdiv) {
+	while (tokenahead->type == tkmul || tokenahead->type == tkdiv || tokenahead->type == tkmod) {
 		token = get_token();
 		/* assert type is tkmul or tkdiv, so not matchtoken */
 		parent = allocnode(syntaxexp, expop, token);
@@ -202,6 +202,7 @@ struct syntaxnode *exp(void)
 	node = simple_exp();
 	switch (tokenahead->type) {
 	case tkeq:
+	case tkneq:
 	case tklt:
 		token = get_token();
 		parent = allocnode(syntaxexp, expop, token);
