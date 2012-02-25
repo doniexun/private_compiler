@@ -1,0 +1,20 @@
+{
+       Sample Language
+       tiny language: gcd
+}
+
+{ read input }
+read a;
+read b;
+
+tmp := 0;
+repeat
+	a := a % b;
+	{ swap a, b }
+	tmp := a;
+	a := b;
+	b := tmp
+until b = 0;
+
+{ output gcd value of a and b }
+write a
